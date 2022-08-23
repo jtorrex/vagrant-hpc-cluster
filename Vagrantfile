@@ -20,40 +20,49 @@ Vagrant.configure("2") do |config|
   # each host.  But don't use it in production!
   config.ssh.insert_key = false
 
+
+  config.vm.provider :libvirt do |libvirt|
+    libvirt.cpu_mode = 'host-model'
+    libvirt.cpus = 1
+    libvirt.disk_bus = 'virtio'
+    libvirt.disk_driver :cache => 'writeback'
+    libvirt.driver = 'kvm'
+    libvirt.memory = 2048
+    libvirt.memorybacking :access, :mode => 'shared'
+    libvirt.nested = true
+    libvirt.nic_model_type = 'virtio'
+    libvirt.storage :file, bus: 'virtio', cache: 'writeback'
+    libvirt.video_type = 'virtio'
+  end
+
   config.vm.define "head" do |head|
-    head.vm.box = "bento/centos-stream-8"
+    head.vm.box = "generic/centos8"
     head.vm.hostname = "head"
     head.vm.network :private_network, ip: "192.168.56.2"
   end
 
   config.vm.define "fe1" do |fe1|
-    fe1.vm.box = "bento/centos-stream-8"
+    fe1.vm.box = "generic/centos8"
     fe1.vm.hostname = "fe1"
     fe1.vm.network :private_network, ip: "192.168.56.3"
   end
 
   config.vm.define "node01" do |node01|
-    node01.vm.box = "bento/centos-stream-8"
+    node01.vm.box = "generic/centos8"
     node01.vm.hostname = "node01"
     node01.vm.network :private_network, ip: "192.168.56.101"
   end
 
   config.vm.define "node02" do |node02|
-    node02.vm.box = "bento/centos-stream-8"
+    node02.vm.box = "generic/centos8"
     node02.vm.hostname = "node02"
     node02.vm.network :private_network, ip: "192.168.56.102"
   end
 
   config.vm.define "node03" do |node03|
-    node03.vm.box = "bento/centos-stream-8"
+    node03.vm.box = "generic/centos8"
     node03.vm.hostname = "node03"
     node03.vm.network :private_network, ip: "192.168.56.103"
-  end
-
-  config.vm.define "node04" do |node04|
-    node04.vm.box = "bento/centos-stream-8"
-    node04.vm.hostname = "node04"
-    node04.vm.network :private_network, ip: "192.168.56.104"
   end
 
   # Disable automatic box update checking. If you disable this, then

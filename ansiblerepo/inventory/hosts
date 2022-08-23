@@ -5,4 +5,4 @@ head
 fe1
 
 [cluster_compute]
-node[01:04]
+node[01:03]
